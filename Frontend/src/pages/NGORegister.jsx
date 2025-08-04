@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useAuth } from '../context/AuthContext'
 import { Heart, Mail, Lock, Phone, MapPin, Eye, EyeOff } from 'lucide-react'
-import MapComponent from '../components/maps/MapComponent'
+// import MapComponent from '../components/maps/MapComponent'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 
 const NGORegister = () => {
@@ -34,19 +34,19 @@ const NGORegister = () => {
   ]
 
   const onSubmit = async (data) => {
-    if (!location) {
-      toast.error('Please select your NGO location on the map')
-      return
-    }
+    // if (!location) {
+    //   toast.error('Please select your NGO location on the map')
+    //   return
+    // }
 
     setIsLoading(true)
 
     const registrationData = {
       ...data,
-      location: {
-        type: 'Point',
-        coordinates: [location.longitude, location.latitude]
-      },
+      // location: {
+      //   type: 'Point',
+      //   coordinates: [location.longitude, location.latitude]
+      // },
       rescueCategories: data.rescueCategories || []
     }
 
@@ -460,11 +460,11 @@ const NGORegister = () => {
                   <p className="text-sm text-gray-600 mb-4">
                     Click on the map to mark your NGO's exact location
                   </p>
-                  <MapComponent
+                  {/* <MapComponent
                     onLocationSelect={setLocation}
                     height="400px"
                     interactive={true}
-                  />
+                  /> */}
                   {!location && (
                     <p className="mt-2 text-sm text-red-600">Please select your location on the map</p>
                   )}

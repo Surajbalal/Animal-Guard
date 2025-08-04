@@ -61,14 +61,21 @@ export const AuthProvider = ({ children }) => {
     setUser(null)
   }
 
-  const register = async (data, userType) => {
-    try {
-      const response = await axios.post(`/api/${userType}/register`, data)
-      return { success: true, data: response.data }
-    } catch (error) {
-      return { success: false, error: error.response?.data?.message || 'Registration failed' }
-    }
+const register = async (data, userType) => {
+  try {
+    const url = `${process.env.VITE_API_BASE_URL}/api/${userType}/register`;
+    console.log("Registering to:", url, "with data:", data);
+    const response = await axios.post(url, data);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.log("Registration failed error:", error);
+    return { 
+      success: false, 
+      error: error.response?.data?.message || error.message || 'Registration failed' 
+    };
   }
+};
+
 
   const value = {
     user,
