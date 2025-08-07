@@ -4,6 +4,7 @@ import axios from 'axios'
 import { format } from 'date-fns'
 import { Search, MapPin, Calendar, User, AlertCircle } from 'lucide-react'
 import LoadingSpinner from '../components/common/LoadingSpinner'
+import axiosInstance from '../context/useAxiosInstance'
 
 const ReportTracker = () => {
   const [searchParams] = useSearchParams()
@@ -25,7 +26,7 @@ const ReportTracker = () => {
     setSearchPerformed(true)
 
     try {
-      const response = await axios.get(`/api/reports/track/${searchId}`)
+      const response = await axiosInstance.get(`/api/reports/track/${searchId}`)
       setReports([response.data])
     } catch (error) {
       console.error('Error fetching report:', error)

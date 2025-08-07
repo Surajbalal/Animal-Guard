@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs')
 
 // const locationSchema = new Schema({
 //   type: {
@@ -111,20 +112,37 @@ require : true
   }
 
 });
+ngoSchema.pre('save', async function(next) {
+  console.log(this.password);
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    console.log("Hashed password before save:", this.password);
+  }
+  next();
+});
 
-ngoSchema.method.genrateAccessToken = async function (){
-    try {
-          const payload = {
-            _id : thids._id,
-            roleType : this.roleType
-          }
-        const token =jwt.sign(payload,process.env.SECRET_KEY,{ expiresIn: '1h' })
-        console.log(token);
-        return token;
-    } catch (error) {
-        return(error);
-    } 
-}
+ ngoSchema.methods.isPasswordCorrect = async function (enterPassword){
+  console.log("helo inside compare ",enterPassword)
+      
+      const result = await bcrypt.compare(enterPassword, this.password); 
+      console.log(result);
+      return result;
+ }
+
+ngoSchema.methods.genrateAccessToken = async function () {
+  try {
+    const payload = {
+      _id: this._id,
+      roleType: this.roleType
+    };
+    const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' });
+    console.log(token);
+    return token;
+  } catch (error) {
+    return error;
+  }
+};
 // const decoded = jwt.verify(token, 'your_secret_key');
 // Add index for location field for geospatial queries
 // ngoSchema.index({ location: '2dsphere' });

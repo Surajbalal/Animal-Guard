@@ -7,6 +7,7 @@ import { MapPin, Upload, AlertTriangle, Send } from 'lucide-react'
 import MapComponent from '../components/maps/MapComponent'
 import FileUpload from '../components/forms/FileUpload'
 import LoadingSpinner from '../components/common/LoadingSpinner'
+import axiosInstance from '../context/useAxiosInstance'
 
 const ReportIncident = () => {
   const [location, setLocation] = useState(null)
@@ -57,7 +58,7 @@ const ReportIncident = () => {
         formData.append('media', file)
       })
 
-      const response = await axios.post('/api/reports', formData, {
+      const response = await axiosInstance.post('/api/reports', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

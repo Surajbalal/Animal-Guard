@@ -1,28 +1,33 @@
+
 const express = require('express');
-// const { cookieParser } = require('cookie-parser');
 const cookieParser = require('cookie-parser');
-const port = process.env.PORT || 9000;
-const routes = require('./Routes')
-
-const app = express();
-
 const cors = require('cors');
+const connectDB = require('./config/db')
+const routes = require('./Routes');
+const morgan = require('morgan')
+const app = express();
+app.use(morgan('dev'))
+connectDB();
+const port = process.env.PORT || 9000;
+
 app.use(cors({
-  origin: true,         // Reflects the request origin
-  credentials: true     // Allows cookies/auth headers
+  origin: true,         // Reflect the request origin
+  credentials: true     // Allow cookies/auth headers
 }));
 
-app.use(cookieParser())
+app.use(cookieParser());
 
-app.use('/api',routes);
-
+// Parse JSON and urlencoded bodies BEFORE routes
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.urlencoded({extended:true }))
+// Mount routes AFTER the body parsers
+app.use('/api', routes);
 
-app.get('/', function(req,res){
-    res.send("hello")
-})
-const server = app.listen(port, () => {
+app.get('/', (req, res) => {
+  res.send("hello");
+});
+
+app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials, userType) => {
     try {
       // Map userType to appropriate endpoint
-      let endpoint = `/api/${userType}/login`
+      let endpoint = `${import.meta.env.VITE_API_BASE_URL}/api/${userType}/login`
       let role = null
 
       // Handle different admin types

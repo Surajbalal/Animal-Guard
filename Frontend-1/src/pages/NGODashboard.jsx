@@ -16,6 +16,7 @@ import {
 import { useAuth } from '../context/AuthContext'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import toast from 'react-hot-toast'
+import axiosInstance from '../context/useAxiosInstance'
 
 const NGODashboard = () => {
   const { user } = useAuth()
@@ -31,8 +32,8 @@ const NGODashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const [casesResponse, statsResponse] = await Promise.all([
-        axios.get('/api/ngo/cases'),
-        axios.get('/api/ngo/stats')
+        axiosInstance.get('/api/ngo/cases'),
+        axiosInstance.get('/api/ngo/stats')
       ])
       
       setCases(casesResponse.data)
